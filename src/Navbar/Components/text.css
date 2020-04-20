@@ -1,0 +1,38 @@
+div.instructions {
+  text-align: center;
+  line-height: 1.5;
+  font-family: "Times New Roman", Times, serif;
+}
+
+div.introText {
+  background-color: #eee;
+  font-size: 15px;
+  text-align: left;
+  margin-right: 150px;
+  margin-left: 150px;
+
+  height: auto;
+  overflow: auto;
+}
+div.personaltext {
+  background-color: #eee;
+  font-size: 10px;
+  text-align: left;
+  margin-right: 150px;
+  margin-left: 150px;
+
+  height: auto;
+  overflow: auto;
+}
+
+p.login {
+  text-align: center;
+}
+
+div.fetched {
+  background-color: #eee;
+  width: 400px;
+  margin-left: 10px;
+  height: auto;
+  overflow: auto;
+}
