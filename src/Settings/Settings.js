@@ -1,8 +1,8 @@
 // URL for the deployed server. All endpoints are to be added below. Called in 'REST/jokesREST'.
-const URL = "https://cakehr.dk/2020CA3";
+const URL = "https://cakehr.dk/2020S3P";
 
 // URL for the Local vagrant server
-//const URL = "http://localhost:8080/2020CA3";
+//const URL = "http://localhost:8080/2020S3P";
 
 
 /*
