@@ -15,6 +15,7 @@ import facade from "../Login/ApiFacade"
 
 import JokesComp from "./Components/JokesComp";
 import HomeComp from "./Components/HomeComp";
+import MapComp from "./Components/MapComp";
 import Login from "../Login/Login";
 
 export default function Navbar() {
@@ -36,11 +37,14 @@ export default function Navbar() {
                 <Route exact path="/">
                     <HomeComp />
                 </Route>
-                <Route path="/jokes">
-                    <JokesComp 
+                <Route exact path="/map">
+                    <MapComp />
+                </Route>
+                {/* <Route path="/jokes">
+                    <JokesComp
                         isLoggedIn={isLoggedIn}
                     />
-                </Route>
+                </Route> */}
                 <Route path="/login-out">
                     <Login
                         loginMsg={isLoggedIn ? "Logout" : "Login"}
@@ -62,8 +66,11 @@ function Header({ isLoggedIn, loginMsg }) {
             <li><NavLink exact activeClassName="active" to="/">Home</NavLink></li>
             {isLoggedIn && (
                 <React.Fragment>
-                    <li>
+                    {/* <li>
                         <NavLink activeClassName="active" to="/jokes">Jokes</NavLink>
+                    </li> */}
+                    <li>
+                        <NavLink activeClassName="active" to="/map">Map</NavLink>
                     </li>
                 </React.Fragment>
             )}
