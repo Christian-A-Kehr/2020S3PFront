@@ -5,8 +5,8 @@ export default function Home() {
     return (
         <div>
             <HowToUse />
-            <PersonalReflectionsChristian />
-            <PersonalReflectionsMartin />
+            {/* <PersonalReflectionsChristian /> */}
+            {/* <PersonalReflectionsMartin /> */}
         </div>
     );
 }
