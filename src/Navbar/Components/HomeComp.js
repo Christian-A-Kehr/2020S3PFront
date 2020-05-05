@@ -7,8 +7,8 @@ export default function Home() {
         <div>
             <ApplicationDecription />
             {/* <HowToUse />
-            {/* <PersonalReflectionsChristian /> */}
-            {/* <PersonalReflectionsMartin /> */}
+            <PersonalReflectionsChristian />
+            <PersonalReflectionsMartin /> */}
         </div>
     );
 }
