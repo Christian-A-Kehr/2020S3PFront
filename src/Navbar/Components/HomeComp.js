@@ -1,10 +1,12 @@
 import React from "react";
 import "./text.css";
+import { Link } from "react-router-dom";
 
 export default function Home() {
     return (
         <div>
-            <HowToUse />
+            <ApplicationDecription />
+            {/* <HowToUse />
             {/* <PersonalReflectionsChristian /> */}
             {/* <PersonalReflectionsMartin /> */}
         </div>
@@ -15,7 +17,7 @@ function HowToUse() {
     return (
         <div>
             <div className=" instructions">
-                <h2> Covid19 tracker</h2>
+                <h2> How to use</h2>
                 <div className="introText">
                     <p>
                         1. Don't touch: 'Login/Login.js', 'index.js' and 'ApiFacade.js'.<br />
@@ -46,6 +48,56 @@ function HowToUse() {
         </div>
     )
 }
+function ApplicationDecription() {
+    return (
+        <div className=" instructions">
+            <h2>Covid19 tracker</h2>
+
+            <div className="personaltext">
+                <p>
+                    <h4>Short summary of the web application: </h4>
+                    This application is an independent project, meant to help people keep track of covid19 status
+                    in different countries around the world. <br />
+
+                    <h4> Info about our outsourcing project </h4>
+                    This application can also be found on a mobil at in “TBD”
+                    <h4> Our REST API </h4>
+                    Get all countries:<br />
+                    <Link> https://e-scape.dk/2020S3PBack/api/country </Link> <br />
+                    Get all Covid19 data for specified country by country code: <br />
+                    <Link> https://e-scape.dk/2020S3PBack/api/country/(code)</Link> <br />
+                    Get newest Covid19 entry for country by country code: <br />
+                    <Link> https://e-scape.dk/2020S3PBack/api/country/new/(code)</Link> <br />
+                    Fetch Covid data for country by code: <br />
+                    <Link> https://e-scape.dk/2020S3PBack/api/country/fetch/covid/(code)</Link> <br />
+                    Fetch all countries: <br />
+                    <Link> https://e-scape.dk/2020S3PBack/api/country/fetch/country/</Link> <br />
+                    Fetch country by code:  <br />
+                    <Link> https://e-scape.dk/2020S3PBack/api/country/fetch/country/(code)</Link> <br />
+
+                    <h2> Which external APIs we are using</h2>
+                    find Covied19 data from one specified <br />
+                    <Link>https://api.covid19api.com/dayone/country/(code)</Link> <br />
+                    find country data for one specified country <br />
+                    <Link>https://restcountries.eu/rest/v1/alpha?codes=(code) </Link> <br />
+                    Get all countries <br />
+                    <Link>http://restcountries.eu/rest/v1/ </Link>
+
+                    <h4>Info about us (the developers)</h4>
+
+                    Developed by MC
+                    <h4>How to use </h4>
+                    Features: <br />
+                    -	Choose a country from the map by clicking on the country or by selecting it from a dropdown menu. <br />
+                    -	After selecting the country, you will be presented with; TBD last week!!!! <br />
+
+                </p>
+            </div>
+        </div>
+    )
+}
+
+
 
 function PersonalReflectionsChristian() {
     return (
@@ -66,6 +118,7 @@ function PersonalReflectionsChristian() {
         </div>
     )
 }
+
 
 function PersonalReflectionsMartin() {
     return (
