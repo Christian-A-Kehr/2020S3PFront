@@ -2,7 +2,9 @@ import React, { useState, useEffect } from "react";
 import world from './world.svg';
 import "./map.css";
 import { useForm } from "./useform";
+import { useFetch } from "./useFetch";
 
+// skal formentligt laves om så map = mapComp 
 export default function MapComp({ isLoggedIn }) {
 
     return (
@@ -26,19 +28,39 @@ function Map() {
                 countryDead: "",
                 countryrecovered: ""
             });
+
+    // // fetch all countries via backEnd
+    const { data, loading } = useFetch("http://localhost:8080/2020S3PBack/api/country");
+
     // use useEffect to see values in consol doing development and afterwords changes it to display all data
     useEffect(() => {
-        console.log(values.countryCode);
-    }, [values.countryCode]);
+        const onMouseover = e => {
+            console.log(e.target.id);
+        };
+        document.addEventListener('click', onMouseover);
+        return () => {
+            document.removeEventListener("click", onMouseover);
+        };
 
+
+        //  
+        //     console.log(values.countryCode);
+        // }, [values.countryCode]);
+    }, []);
     // const eventClick = world.getElementById("svg2");
     // eventClick.addEventListener("click", eventHandler, false)
+
+
+
     return (
+
         <div>
             <div id="worldMap">
+
                 {/* not sure about img, in world its svg */}
                 <img src={world} alt="worldMap" />
 
+                <div>{loading ? 'loading...' : data}</div>
                 {/* < onClick={() => setCountry(e.target.id)} */}
 
             </div>
