@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import world from './world.svg';
-
+import "./map.css";
+import { useForm } from "./useform";
 
 export default function MapComp({ isLoggedIn }) {
+
     return (
         <div>
             < Map />
@@ -10,16 +12,62 @@ export default function MapComp({ isLoggedIn }) {
     );
 }
 
+
+var prev;
 function Map() {
+    // uses custom hook from useform.js
+    const [values, setValues] =
+        useForm(
+            {
+                countryCode: "",
+                countryName: "",
+                countryPopulation: "",
+                countryInfcted: "",
+                countryDead: "",
+                countryrecovered: ""
+            });
+    // use useEffect to see values in consol doing development and afterwords changes it to display all data
+    useEffect(() => {
+        console.log(values.countryCode);
+    }, [values.countryCode]);
+
+    // const eventClick = world.getElementById("svg2");
+    // eventClick.addEventListener("click", eventHandler, false)
     return (
         <div>
-            <div id="svg2">
-                <img src={world} alt="woldmap" />
+            <div id="worldMap">
+                {/* not sure about img, in world its svg */}
+                <img src={world} alt="worldMap" />
+
+                {/* < onClick={() => setCountry(e.target.id)} */}
+
             </div>
+
+
         </div>
     )
 }
 
+function Clicked(props) {
+    var id = props.id;
+    return
+}
+
+function eventHandler(e) {
+    // get id from event
+    var id = e.target.id;
+    // paint or reset
+    if (!prev) {
+        e.target.style.fill = "red";
+        prev = e.target;
+    } else {
+        prev.style.fill = "rgb(192, 192, 192)";
+        e.target.style.fill = "red";
+        prev = e.target;
+    }
+    // getCountry henter daten og retuner det til returnPoints
+    // getCountry(id);
+}
 
 
 
@@ -32,31 +80,33 @@ function Map() {
 // const returnPoint4 = document.getElementById("contryBorders");
 
 
-// function getCountry(id) {
-//     // Brug id til at lave fix på GB og vandmasserne her. bare sæt egen værdier i returnpoints
-//     console.log(id)
-//     if (id == "svg2") {
-//         returnPoint1.innerText = "Name: Ocean"
-//         returnPoint2.innerText = "Population: alot "
-//         returnPoint3.innerText = "Area: less than 510.100.000 km2"
-//         returnPoint4.innerText = "Borders: incuding rivers? idk!"
-//     } else {
+function getCountry(id) {
+    // Brug id til at lave fix på GB og vandmasserne her. bare sæt egen værdier i returnpoints
+    console.log(id)
+    if (id == "svg2") {
+        // // // returnpoints skal laves om til at pege på hook   
+        // returnPoint1.innerText = "Name: Ocean"
+        // returnPoint2.innerText = "Population: alot "
+        // returnPoint3.innerText = "Area: less than 510.100.000 km2"
+        // returnPoint4.innerText = "Borders: incuding rivers? idk!"
+    } else {
 
-//         var url = "http://restcountries.eu/rest/v1/alpha?codes=" + id
-//         console.log(url)
-//         fetch(url)
-//             .then(res => res.json())
-//             .then(data => {
-//                 // kontrol af data indhold
-//                 console.log(data)
-//                 // then data =>{} = hvad skal der ske med dataen    
-//                 returnPoint1.innerText = "Name: " + data[0].name
-//                 returnPoint2.innerText = "Population: " + data[0].population
-//                 returnPoint3.innerText = "Area: " + data[0].area
-//                 returnPoint4.innerText = "Borders: " + data[0].borders
-//             })
-//     }
-// }
+        var url = "http://restcountries.eu/rest/v1/alpha?codes=" + id
+        console.log(url)
+        fetch(url)
+            .then(res => res.json())
+            .then(data => {
+                // kontrol af data indhold
+                console.log(data)
+                // // then data =>{} = hvad skal der ske med dataen 
+                // // returnpoints skal laves om til at pege på hook   
+                // returnPoint1.innerText = "Name: " + data[0].name
+                // returnPoint2.innerText = "Population: " + data[0].population
+                // returnPoint3.innerText = "Area: " + data[0].area
+                // returnPoint4.innerText = "Borders: " + data[0].borders
+            })
+    }
+}
 
 // // eventListener registrere click på kortet og vidergiver event til eventHandler (Egen funktion)
 // eventClick.addEventListener("click", eventHandler, false)
