@@ -1,0 +1,18 @@
+#worldMap {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  margin-top: 20px;
+}
+
+path:hover,
+circle:hover {
+  stroke: #002868 !important;
+  stroke-width: 2px;
+  stroke-linejoin: round;
+  fill: #002868 !important;
+  cursor: pointer;
+}

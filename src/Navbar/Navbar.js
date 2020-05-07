@@ -1,19 +1,19 @@
 import React, { useState } from "react";
 import {
-    HashRouter as Router,
+    // HashRouter as Router,
     Switch,
     Route,
     NavLink,
-    Link,
-    Prompt,
-    useParams,
-    useRouteMatch,
+    // Link,
+    // Prompt,
+    // useParams,
+    // useRouteMatch,
     useHistory
 } from "react-router-dom";
 import "./navStyle.css";
 import facade from "../Login/ApiFacade"
 
-import JokesComp from "./Components/JokesComp";
+// import JokesComp from "./Components/JokesComp";
 import HomeComp from "./Components/HomeComp";
 import MapComp from "./Components/MapComp";
 import Login from "../Login/Login";
