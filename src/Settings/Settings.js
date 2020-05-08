@@ -16,5 +16,9 @@ const loginEP = "/api/login";
 Add custom endpoints here for REST endpoints. Called in 'Navbar/Components'.
 */
 const allJokesEP = "/api/jokes";
+const newestCovidEP = "/api/country/new/";
+const newestThreeCovidEP = "/api/country/newest/3/";
+const allCountriesEP = "/api/country";
+// const country = "";
 
-export { URL, userDataEP, loginEP, allJokesEP };
+export { URL, userDataEP, loginEP, allJokesEP, newestCovidEP, newestThreeCovidEP, allCountriesEP };
