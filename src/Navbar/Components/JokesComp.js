@@ -1,5 +1,4 @@
 // import React from "react";
-// import Jokes from "../../REST/Jokes";
 // import { GETAllJokes } from "../../REST/JokesREST"
 // import {
 //     allJokesEP
