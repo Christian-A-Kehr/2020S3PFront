@@ -16,3 +16,28 @@ circle:hover {
   fill: #002868 !important;
   cursor: pointer;
 }
+
+#text {
+  /* margin-left: 775px; */
+  text-align: left;
+}
+
+#textBox {
+  background-color: lightgrey;
+  width: 250px;
+  border: 2px solid black;
+  padding: 10px;
+  margin-top: 70px;
+  margin-left: 750px;
+  text-align: left;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+table,
+td,
+th {
+  border: 1px solid black;
+}
