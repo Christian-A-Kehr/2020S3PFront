@@ -1,17 +1,21 @@
 import React, { useState, useEffect } from "react";
 import world from './world.svg';
 import "./map.css";
+import { GETNewestCovid } from "../../REST/CovidREST"
+import {
+    newestCovidEP
+} from "../../Settings/Settings";
 import { useForm } from "./useform";
 import { useFetch } from "./useFetch";
 
 
 export default function MapComp({ isLoggedIn }) {
-    const [countryCode, setcountrycd] = useState("");
-    const [countryName, setCountryName] = useState("");
-    const [countryPopulation, setcountryPopulation] = useState("");
-    const [countryInfected, setcountryInfected] = useState("");
-    const [countryDead, setcountryDead] = useState("");
-    const [countryRecovered, setcountryRevored] = useState("");
+    // const [countryCode, setcountrycd] = useState("");
+    // const [countryName, setCountryName] = useState("");
+    // const [countryPopulation, setcountryPopulation] = useState("");
+    // const [countryInfected, setcountryInfected] = useState("");
+    // const [countryDead, setcountryDead] = useState("");
+    // const [countryRecovered, setcountryRevored] = useState("");
 
     var mapsvg = document.getElementById("worldMap")
 
@@ -46,42 +50,43 @@ export default function MapComp({ isLoggedIn }) {
     // }, []);
 
     /////////////////////////////////getCountry\\\\\\\\\\\\\\\\\\\\\\\
-    function getCountry(id) {
-        // Brug id til at lave fix på GB og vandmasserne her. bare sæt egen værdier i returnpoints
-        console.log(id)
-        if (id == "svg2") {
-            // // // returnpoints skal laves om til at pege på hook   
-            // returnPoint1.innerText = "Name: Ocean"
-            // returnPoint2.innerText = "Population: alot "
-            // returnPoint3.innerText = "Area: less than 510.100.000 km2"
-            // returnPoint4.innerText = "Borders: incuding rivers? idk!"
-        } else {
+    // function getCountry(id) {
+    //     // Brug id til at lave fix på GB og vandmasserne her. bare sæt egen værdier i returnpoints
+    //     console.log(id)
+    //     if (id == "svg2") {
+    //         // // // returnpoints skal laves om til at pege på hook   
+    //         // returnPoint1.innerText = "Name: Ocean"
+    //         // returnPoint2.innerText = "Population: alot "
+    //         // returnPoint3.innerText = "Area: less than 510.100.000 km2"
+    //         // returnPoint4.innerText = "Borders: incuding rivers? idk!"
+    //     } else {
 
-            var url = "http://restcountries.eu/rest/v1/alpha?codes=de" + id
-            console.log(url)
-            fetch(url)
-                .then(res => res.json())
-                .then(data => {
-                    // kontrol af data indhold
-                    console.log(data)
-                    // // then data =>{} = hvad skal der ske med dataen 
-                    // // returnpoints skal laves om til at pege på hook
-                    // values.countryCode.setValues(data[0].alpha2Code)
+    //         var url = "http://restcountries.eu/rest/v1/alpha?codes=de" + id
+    //         console.log(url)
+    //         fetch(url)
+    //             .then(res => res.json())
+    //             .then(data => {
+    //                 // kontrol af data indhold
+    //                 console.log(data)
+    //                 // // then data =>{} = hvad skal der ske med dataen 
+    //                 // // returnpoints skal laves om til at pege på hook
+    //                 // values.countryCode.setValues(data[0].alpha2Code)
 
-                    setcountrycd(data[0].alpha2Code)
-                    setCountryName(data[0].name)
-                    setcountryPopulation(data[0].population)
+    //                 setcountrycd(data[0].alpha2Code)
+    //                 setCountryName(data[0].name)
+    //                 setcountryPopulation(data[0].population)
 
-                    // setValues(values.countryCode = data[0].alpha2Code)
-                    // values.countryCode.setValues = data[0].alpha2Code
-                    // values.countryName = data[0].name
-                    // values.countryPopulation = data[0].population
-                    // values.countryInfcted = data[0].
-                    // returnPoint4.innerText = "Borders: " + data[0].borders
-                    console.log("code: " + countryCode + " Name: " + countryName + " poulation : " + countryPopulation);
-                })
-        }
-    }
+    //                 // setValues(values.countryCode = data[0].alpha2Code)
+    //                 // values.countryCode.setValues = data[0].alpha2Code
+    //                 // values.countryName = data[0].name
+    //                 // values.countryPopulation = data[0].population
+    //                 // values.countryInfcted = data[0].
+    //                 // returnPoint4.innerText = "Borders: " + data[0].borders
+    //                 console.log("code: " + countryCode + " Name: " + countryName + " poulation : " + countryPopulation);
+    //             })
+    //     }
+    // }
+
     ////////////////////////////Dropdown box\\\\\\\\\\\\\\\\\\\
     function dropdown() {
         var x = document.getElementById("Demo");
@@ -124,11 +129,11 @@ export default function MapComp({ isLoggedIn }) {
             {/* Smid svg rent in her hvis det ikke snart virker... */}
             <div id="textBox">
                 <div>   <button onclick={dropdown} class="DropDownButton">Select country</button></div>
-                Country name:        {countryName} <br></br>
-                Population:          {countryPopulation} <br></br>
-                Infected:            {countryInfected} <br></br>
-                Deceased:            {countryDead} <br></br>
-                Recovered:           {countryRecovered} <br></br>
+                <div>
+                    <GETNewestCovid 
+                    endpoint={newestCovidEP + alpha2Code}
+                    />
+                </div>
                 _____________________________________ <br></br>
                 <p>country development</p>
 
