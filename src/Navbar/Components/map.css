@@ -1,0 +1,43 @@
+#worldMap {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  margin-top: 20px;
+}
+
+path:hover,
+circle:hover {
+  stroke: #002868 !important;
+  stroke-width: 2px;
+  stroke-linejoin: round;
+  fill: #002868 !important;
+  cursor: pointer;
+}
+
+#text {
+  /* margin-left: 775px; */
+  text-align: left;
+}
+
+#textBox {
+  background-color: lightgrey;
+  width: 250px;
+  border: 2px solid black;
+  padding: 10px;
+  margin-top: 70px;
+  margin-left: 750px;
+  text-align: left;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+table,
+td,
+th {
+  border: 1px solid black;
+}
