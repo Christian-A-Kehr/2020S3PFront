@@ -3,18 +3,19 @@ import world from './world.svg';
 import "./map.css";
 import { useForm } from "./useform";
 import { useFetch } from "./useFetch";
-
+import { facadeREST } from "../../REST/RESTFacade"
+import facade from "../../Login/ApiFacade";
 
 export default function MapComp({ isLoggedIn }) {
-    const [countryCode, setcountrycd] = useState("");
+    const [countryCode, setCountrycd] = useState("");
     const [countryName, setCountryName] = useState("");
-    const [countryPopulation, setcountryPopulation] = useState("");
-    const [countryInfected, setcountryInfected] = useState("");
-    const [countryDead, setcountryDead] = useState("");
-    const [countryRecovered, setcountryRevored] = useState("");
+    const [countryPopulation, setCountryPopulation] = useState("");
+    const [countryInfected, setCountryInfected] = useState("");
+    const [countryDead, setCountryDead] = useState("");
+    const [countryRecovered, setCountryRecovered] = useState("");
+    const [day1, setDay1] = useState("");
 
-    var mapsvg = document.getElementById("worldMap")
-
+    const urlGetdays = "/api/country/newest/{days}/{code}";
 
     // const [values, setValues] =
     //     useForm(
@@ -27,58 +28,52 @@ export default function MapComp({ isLoggedIn }) {
     //             countryrecovered: ""
     //         });
 
-
-    ////////////////////////////////UseEffect\\\\\\\\\\\\\\\\\\\\\\\\\\\            
-    //skal vise obj så lav en getCountry function som aktiveres ved click
-    useFetch("http://localhost:8080/2020S3PBack/api/country");
-
-    // useEffect(() => {
-    //     const onMouseClik = e => {
-    //         console.log(e.target.id);
-    //         // values.countryCode.setValues(e.taget.id);
-    //     };
-    //     document.addEventListener('click', onMouseClik);
-    //     return () => {
-    //         document.removeEventListener("click", onMouseClik);
-    //     };
-    //     //     console.log(values.countryCode);
-    //     // }, [values.countryCode]);
-    // }, []);
-
     /////////////////////////////////getCountry\\\\\\\\\\\\\\\\\\\\\\\
     function getCountry(id) {
-        // Brug id til at lave fix på GB og vandmasserne her. bare sæt egen værdier i returnpoints
-        console.log(id)
+        // console.log(id)
+        // if you click outside a country you will get svg2 as id
         if (id == "svg2") {
-            // // // returnpoints skal laves om til at pege på hook   
-            // returnPoint1.innerText = "Name: Ocean"
-            // returnPoint2.innerText = "Population: alot "
-            // returnPoint3.innerText = "Area: less than 510.100.000 km2"
-            // returnPoint4.innerText = "Borders: incuding rivers? idk!"
-        } else {
+            setCountryName("Ocean")
+            setCountryPopulation("2100000")
+            setCountryInfected("")
+            setCountryDead("")
+            setCountryRecovered("")
+            setDay1("")
 
-            var url = "http://restcountries.eu/rest/v1/alpha?codes=de" + id
+        } else {
+            const url = "http://localhost:8080/2020S3PBack/api/country/new/" + id
             console.log(url)
             fetch(url)
                 .then(res => res.json())
                 .then(data => {
                     // kontrol af data indhold
-                    console.log(data)
+                    // console.log(data)
                     // // then data =>{} = hvad skal der ske med dataen 
-                    // // returnpoints skal laves om til at pege på hook
+
+                    var population = data.population.toLocaleString();
+                    var infected = data.totalConfirmedInfected.toLocaleString();
+                    var deaths = data.totalDeaths.toLocaleString();
+                    var recovered = data.totalRecovered.toLocaleString();
+
+                    setCountrycd(id)
+                    setCountryName(data.countryName)
+                    setCountryPopulation(population)
+                    setCountryInfected(infected)
+                    setCountryDead(deaths)
+                    setCountryRecovered(recovered)
+                    setDay1(data.date)
+
+                    // console.log("code: " + countryCode + " Name: " + countryName + " poulation : " + countryPopulation);
+
+                    ////// Christian rod!\\\\\\ 
                     // values.countryCode.setValues(data[0].alpha2Code)
-
-                    setcountrycd(data[0].alpha2Code)
-                    setCountryName(data[0].name)
-                    setcountryPopulation(data[0].population)
-
                     // setValues(values.countryCode = data[0].alpha2Code)
                     // values.countryCode.setValues = data[0].alpha2Code
                     // values.countryName = data[0].name
                     // values.countryPopulation = data[0].population
                     // values.countryInfcted = data[0].
                     // returnPoint4.innerText = "Borders: " + data[0].borders
-                    console.log("code: " + countryCode + " Name: " + countryName + " poulation : " + countryPopulation);
+                    ///////////////////\\\\\\\\\\\\\\\\\\\
                 })
         }
     }
@@ -103,10 +98,10 @@ export default function MapComp({ isLoggedIn }) {
     function eventHandler(e) {
         // get id from event
         var id = e.target.id;
-        console.log(id);
+        // console.log(id);
         // paint or reset
         if (!prev) {
-            e.target.style.fill = "red";
+            e.target.style.fill = "rgb(131, 60, 60)";
             prev = e.target;
         } else {
             prev.style.fill = "rgb(192, 192, 192)";
@@ -116,51 +111,112 @@ export default function MapComp({ isLoggedIn }) {
         // getCountry henter daten og retuner det til returnPoints
         getCountry(id);
         populateTable(id);
+
     }
     ////////////////////////////////return MapComp\\\\\\\\\\\\\\\\\\\\\\\\\\\
+    function myFunction() {
+        document.getElementById("myDropdown").classList.toggle("show");
+    }
+
+    function filterFunction() {
+        var input, filter, ul, li, a, i, div;
+        input = document.getElementById("myInput");
+        filter = input.value.toUpperCase();
+        div = document.getElementById("myDropdown");
+        a = div.getElementsByTagName("a");
+        for (i = 0; i < a.length; i++) {
+            const txtValue = a[i].textContent || a[i].innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                a[i].style.display = "";
+            } else {
+                a[i].style.display = "none";
+            }
+        }
+    }
+
 
     return (
         <div>
             {/* Smid svg rent in her hvis det ikke snart virker... */}
             <div id="textBox">
-                <div>   <button onclick={dropdown} class="DropDownButton">Select country</button></div>
-                Country name:        {countryName} <br></br>
+                <div class="dropdown">
+                    <button onclick="myFunction()" class="dropbtn">Dropdown</button>
+                    <div id="myDropdown" class="dropdown-content">
+                        <div> <input type="text" placeholder="Search.." id="myInput" onKeyUp={filterFunction, myFunction} /> </div>
+                        <a href="#about">About</a>
+                        <a href="#base">Base</a>
+                        <a href="#blog">Blog</a>
+                        <a href="#contact">Contact</a>
+                        <a href="#custom">Custom</a>
+                        <a href="#support">Support</a>
+                        <a href="#tools">Tools</a>
+                    </div>
+                </div>
+
+
+
+                <div>   <button onClick={dropdown} className="DropDownButton">Select country</button></div>
+                <button onClick={dropdown} className="DropDownButton">Select country</button>
+
+                {/* Country name:        {countryName} <br></br>
                 Population:          {countryPopulation} <br></br>
                 Infected:            {countryInfected} <br></br>
                 Deceased:            {countryDead} <br></br>
-                Recovered:           {countryRecovered} <br></br>
+                Recovered:           {countryRecovered} <br></br> */}
+                <table className="table">
+                    <tbody>
+                        <tr>
+                            {/* <th>Country</th> */}
+                            <th>Country name</th>
+                            <th>Population</th>
+                            <th>Infected</th>
+                            <th>Deceased</th>
+                            <th>Recovered</th>
+                        </tr>
+                        <tr>
+                            {/* <td>DE</td> */}
+                            <td>{countryName}</td>
+                            <td>{countryPopulation}</td>
+                            <td>{countryInfected}</td>
+                            <td>{countryDead}</td>
+                            <td>{countryRecovered}</td>
+                        </tr>
+                    </tbody>
+                </table>
                 _____________________________________ <br></br>
                 <p>country development</p>
 
-                <table class="table">
-                    <tr>
-                        {/* <th>Country</th> */}
-                        <th>Date</th>
-                        <th>Infected</th>
-                        <th>Deceased</th>
-                        <th>Recovered</th>
-                    </tr>
-                    <tr>
-                        {/* <td>DE</td> */}
-                        <td>No date</td>
-                        <td>No data</td>
-                        <td>No data</td>
-                        <td>No data</td>
-                    </tr>
-                    <tr>
-                        {/* <td>DK</td> */}
-                        <td>No date</td>
-                        <td>No data</td>
-                        <td>No data</td>
-                        <td>No data</td>
-                    </tr>
-                    <tr>
-                        {/* <td>Se</td> */}
-                        <td>No date</td>
-                        <td>No data</td>
-                        <td>No data</td>
-                        <td>No data</td>
-                    </tr>
+                <table className="table">
+                    <tbody>
+                        <tr>
+                            {/* <th>Country</th> */}
+                            <th>Date</th>
+                            <th>Infected</th>
+                            <th>Deceased</th>
+                            <th>Recovered</th>
+                        </tr>
+                        <tr>
+                            {/* <td>DE</td> */}
+                            <td>{day1}</td>
+                            <td>{countryInfected}</td>
+                            <td>{countryDead}</td>
+                            <td>{countryRecovered}</td>
+                        </tr>
+                        <tr>
+                            {/* <td>DK</td> */}
+                            <td>No date</td>
+                            <td>No data</td>
+                            <td>No data</td>
+                            <td>No data</td>
+                        </tr>
+                        <tr>
+                            {/* <td>Se</td> */}
+                            <td>No date</td>
+                            <td>No data</td>
+                            <td>No data</td>
+                            <td>No data</td>
+                        </tr>
+                    </tbody>
                 </table>
                 _____________________________________ <br></br>
                 <p>Graf TBO</p>
@@ -168,9 +224,10 @@ export default function MapComp({ isLoggedIn }) {
 
             <div id="worldMap">
                 {/* not sure about img, in world its svg */}
-                <img src={world} alt="worldmap" onClick={eventHandler} />
-                {/* {mapsvg.addEventListener("click", eventHandler, false)} */}
-
+                {/* <img src={world} alt="worldmap" onClick={eventHandler} /> */}
+                {/* <img src={world} alt="worldmap" />
+                {window.addEventListener("click", eventHandler, false)} */}
+                {document.getElementById("svg2").addEventListener('click', eventHandler)};
             </div>
 
         </div >
@@ -186,3 +243,5 @@ export default function MapComp({ isLoggedIn }) {
 
 //////////////////////Links\\\\\\\\\\\\\\\\\\
 // Accessing Object Values + objt loop: https://www.w3schools.com/js/js_json_objects.asp
+
+// drop down with search: https://www.w3schools.com/howto/howto_js_filter_dropdown.asp
