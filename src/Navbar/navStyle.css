@@ -21,6 +21,7 @@ ul.header li a {
   text-align: center;
   padding: 14px 16px;
   text-decoration: none;
+  font-size: 26px;
 }
 ul.header li a:hover:not(.active) {
   background-color: rgb(131, 60, 60);
