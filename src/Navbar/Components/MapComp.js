@@ -14,6 +14,7 @@ export default function MapComp({ isLoggedIn }) {
     const [countryDead, setCountryDead] = useState("");
     const [countryRecovered, setCountryRecovered] = useState("");
     const [day1, setDay1] = useState("");
+    const [loading, setLoading] = useState("")
 
     const urlGetdays = "/api/country/newest/{days}/{code}";
 
@@ -27,6 +28,13 @@ export default function MapComp({ isLoggedIn }) {
     //             countryDead: "",
     //             countryrecovered: ""
     //         });
+
+    /////////////////////////////////UseEffect\\\\\\\\\\\\\\\\\\\\\\\
+    // useEffect(() => {
+    //     setLoading(true)
+
+
+    // })
 
     /////////////////////////////////getCountry\\\\\\\\\\\\\\\\\\\\\\\
     function getCountry(id) {
@@ -50,19 +58,33 @@ export default function MapComp({ isLoggedIn }) {
                     // console.log(data)
                     // // then data =>{} = hvad skal der ske med dataen 
 
+                    // var population = data.population;
+                    // var infected = data.totalConfirmedInfected;
+                    // var deaths = data.totalDeaths;
+                    // var recovered = data.totalRecovered;
+
+
                     var population = data.population.toLocaleString();
                     var infected = data.totalConfirmedInfected.toLocaleString();
                     var deaths = data.totalDeaths.toLocaleString();
                     var recovered = data.totalRecovered.toLocaleString();
 
+                    var p = population;
+                    var i = infected;
+                    var d = deaths;
+                    var r = recovered;
+
+
+
                     setCountrycd(id)
                     setCountryName(data.countryName)
-                    setCountryPopulation(population)
-                    setCountryInfected(infected)
-                    setCountryDead(deaths)
-                    setCountryRecovered(recovered)
+                    setCountryPopulation(p)
+                    setCountryInfected(i)
+                    setCountryDead(d)
+                    setCountryRecovered(r)
                     setDay1(data.date)
 
+                    setLoading(false)
                     // console.log("code: " + countryCode + " Name: " + countryName + " poulation : " + countryPopulation);
 
                     ////// Christian rod!\\\\\\ 
@@ -109,55 +131,38 @@ export default function MapComp({ isLoggedIn }) {
             prev = e.target;
         }
         // getCountry henter daten og retuner det til returnPoints
+        console.log("Calling")
         getCountry(id);
         populateTable(id);
 
     }
-    ////////////////////////////////return MapComp\\\\\\\\\\\\\\\\\\\\\\\\\\\
-    function myFunction() {
-        document.getElementById("myDropdown").classList.toggle("show");
-    }
 
-    function filterFunction() {
-        var input, filter, ul, li, a, i, div;
-        input = document.getElementById("myInput");
-        filter = input.value.toUpperCase();
-        div = document.getElementById("myDropdown");
-        a = div.getElementsByTagName("a");
-        for (i = 0; i < a.length; i++) {
-            const txtValue = a[i].textContent || a[i].innerText;
-            if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                a[i].style.display = "";
-            } else {
-                a[i].style.display = "none";
-            }
+    function myFunction() {
+        var x = document.getElementById("svg2");
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
         }
     }
+    ////////////////////////////////return MapComp\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
 
 
     return (
         <div>
             {/* Smid svg rent in her hvis det ikke snart virker... */}
+            <div> <button onClick={myFunction}>Toggle map</button></div>
             <div id="textBox">
-                <div class="dropdown">
-                    <button onclick="myFunction()" class="dropbtn">Dropdown</button>
-                    <div id="myDropdown" class="dropdown-content">
-                        <div> <input type="text" placeholder="Search.." id="myInput" onKeyUp={filterFunction, myFunction} /> </div>
-                        <a href="#about">About</a>
-                        <a href="#base">Base</a>
-                        <a href="#blog">Blog</a>
-                        <a href="#contact">Contact</a>
-                        <a href="#custom">Custom</a>
-                        <a href="#support">Support</a>
-                        <a href="#tools">Tools</a>
-                    </div>
-                </div>
+
+
 
 
 
                 <div>   <button onClick={dropdown} className="DropDownButton">Select country</button></div>
                 <button onClick={dropdown} className="DropDownButton">Select country</button>
 
+                {loading}
                 {/* Country name:        {countryName} <br></br>
                 Population:          {countryPopulation} <br></br>
                 Infected:            {countryInfected} <br></br>
@@ -183,8 +188,9 @@ export default function MapComp({ isLoggedIn }) {
                         </tr>
                     </tbody>
                 </table>
-                _____________________________________ <br></br>
-                <p>country development</p>
+                <br></br>
+                ________________________________________________________________________ <br></br>
+                <h2>Country development</h2>
 
                 <table className="table">
                     <tbody>
@@ -218,7 +224,7 @@ export default function MapComp({ isLoggedIn }) {
                         </tr>
                     </tbody>
                 </table>
-                _____________________________________ <br></br>
+                ________________________________________________________________________<br></br>
                 <p>Graf TBO</p>
             </div>
 

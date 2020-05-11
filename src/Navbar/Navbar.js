@@ -35,7 +35,7 @@ export default function Navbar() {
             />
             <Switch>
                 <Route exact path="/">
-                    <HomeComp />
+                    <HomeComp maptoggle={ToggleMap()} />
                 </Route>
                 <Route exact path="/map">
                     <MapComp />
@@ -87,4 +87,13 @@ function NoMatch() {
             <h2>NoMatch</h2>
         </div>
     )
+}
+
+function ToggleMap() {
+    var x = document.getElementById("svg2");
+    if (x.style.display === "none") {
+        x.style.display = "block";
+    } else {
+        x.style.display = "none";
+    }
 }
