@@ -64,7 +64,7 @@ function Header({ isLoggedIn, loginMsg }) {
     return (
         <ul className="header">
             <li><NavLink exact activeClassName="active" to="/">Home</NavLink></li>
-            {isLoggedIn && (
+            {
                 <React.Fragment>
                     {/* <li>
                         <NavLink activeClassName="active" to="/jokes">Jokes</NavLink>
@@ -73,7 +73,7 @@ function Header({ isLoggedIn, loginMsg }) {
                         <NavLink activeClassName="active" to="/map">Map</NavLink>
                     </li>
                 </React.Fragment>
-            )}
+            }
             <li>
                 <NavLink activeClassName="selected" to="/login-out">{loginMsg}</NavLink>
             </li>
