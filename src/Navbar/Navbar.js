@@ -36,6 +36,7 @@ export default function Navbar() {
             <Switch>
                 <Route exact path="/">
                     <HomeComp />
+                    {/* <HomeComp maptoggle={ToggleMap()} /> */}
                 </Route>
                 <Route exact path="/map">
                     <MapComp />
@@ -64,7 +65,7 @@ function Header({ isLoggedIn, loginMsg }) {
     return (
         <ul className="header">
             <li><NavLink exact activeClassName="active" to="/">Home</NavLink></li>
-            {isLoggedIn && (
+            {
                 <React.Fragment>
                     {/* <li>
                         <NavLink activeClassName="active" to="/jokes">Jokes</NavLink>
@@ -73,7 +74,7 @@ function Header({ isLoggedIn, loginMsg }) {
                         <NavLink activeClassName="active" to="/map">Map</NavLink>
                     </li>
                 </React.Fragment>
-            )}
+            }
             <li>
                 <NavLink activeClassName="selected" to="/login-out">{loginMsg}</NavLink>
             </li>
@@ -87,4 +88,13 @@ function NoMatch() {
             <h2>NoMatch</h2>
         </div>
     )
+}
+
+function ToggleMap() {
+    var x = document.getElementById("svg2");
+    if (x.style.display === "none") {
+        x.style.display = "block";
+    } else {
+        x.style.display = "none";
+    }
 }

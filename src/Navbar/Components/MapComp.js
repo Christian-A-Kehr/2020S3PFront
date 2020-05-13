@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
-import world from './world.svg';
+import { ReactComponent as World } from './world.svg';
 import "./map.css";
 import { useForm } from "./useform";
 import { useFetch } from "./useFetch";
 import { facadeREST } from "../../REST/RESTFacade"
 import facade from "../../Login/ApiFacade";
+// import { SvgFromUri } from "react-native-svg";
 
 export default function MapComp({ isLoggedIn }) {
+    /////////////Hooks\\\\\\\\\\\\\\\\\\\\
     const [countryCode, setCountrycd] = useState("");
     const [countryName, setCountryName] = useState("");
     const [countryPopulation, setCountryPopulation] = useState("");
@@ -14,9 +16,14 @@ export default function MapComp({ isLoggedIn }) {
     const [countryDead, setCountryDead] = useState("");
     const [countryRecovered, setCountryRecovered] = useState("");
     const [day1, setDay1] = useState("");
+    const [loading, setLoading] = useState("Select a country");
+    const [property, setProperty] = useState("de");
 
+    const theMap = document.getElementById("svg2");
     const urlGetdays = "/api/country/newest/{days}/{code}";
+    const { allCountries, loadingCountries } = useFetch("http://localhost:8080/2020S3PBack/api/country");
 
+    ////////////////////////// custom hook\\\\\\\\\\\\\\\
     // const [values, setValues] =
     //     useForm(
     //         {
@@ -27,6 +34,13 @@ export default function MapComp({ isLoggedIn }) {
     //             countryDead: "",
     //             countryrecovered: ""
     //         });
+
+    /////////////////////////////////UseEffect\\\\\\\\\\\\\\\\\\\\\\\
+    // useEffect(() => {
+    //     setLoading(true)
+
+
+    // })
 
     /////////////////////////////////getCountry\\\\\\\\\\\\\\\\\\\\\\\
     function getCountry(id) {
@@ -47,21 +61,37 @@ export default function MapComp({ isLoggedIn }) {
                 .then(res => res.json())
                 .then(data => {
                     // kontrol af data indhold
-                    // console.log(data)
+                    console.log(data)
                     // // then data =>{} = hvad skal der ske med dataen 
 
-                    var population = data.population.toLocaleString();
-                    var infected = data.totalConfirmedInfected.toLocaleString();
-                    var deaths = data.totalDeaths.toLocaleString();
-                    var recovered = data.totalRecovered.toLocaleString();
+                    // var population = data.population;
+                    // var infected = data.totalConfirmedInfected;
+                    // var deaths = data.totalDeaths;
+                    // var recovered = data.totalRecovered;
+
+                    if (data.date == null || data.date == "") {
+                        var name = data.countryName;
+                        var population = data.population;
+                        var infected = "No data";
+                        var deaths = "No data";
+                        var recovered = "No data";
+                    } else {
+
+                        var name = data.countryName;
+                        var population = data.population.toLocaleString();
+                        var infected = data.totalConfirmedInfected.toLocaleString();
+                        var deaths = data.totalDeaths.toLocaleString();
+                        var recovered = data.totalRecovered.toLocaleString();
+                    }
 
                     setCountrycd(id)
-                    setCountryName(data.countryName)
+                    setCountryName(name)
                     setCountryPopulation(population)
                     setCountryInfected(infected)
                     setCountryDead(deaths)
                     setCountryRecovered(recovered)
                     setDay1(data.date)
+                    setLoading(false)
 
                     // console.log("code: " + countryCode + " Name: " + countryName + " poulation : " + countryPopulation);
 
@@ -77,7 +107,7 @@ export default function MapComp({ isLoggedIn }) {
                 })
         }
     }
-    ////////////////////////////Dropdown box\\\\\\\\\\\\\\\\\\\
+    ////////////////////////////Dropdown box\\\\\\\\\\\\\\\\\\\ subject to change
     function dropdown() {
         var x = document.getElementById("Demo");
         if (x.className.indexOf("w3-show") == -1) {
@@ -86,7 +116,7 @@ export default function MapComp({ isLoggedIn }) {
             x.className = x.className.replace(" w3-show", "");
         }
     }
-    /////////////////////////populate table\\\\\\\\\\\\\\\\\\\\\
+    /////////////////////////populate table\\\\\\\\\\\\\\\\\\\\\  TBD
 
     function populateTable(id) {
         // 1. fetchCall(id)
@@ -94,69 +124,92 @@ export default function MapComp({ isLoggedIn }) {
     }
 
     ////////////////////////eventHandler\\\\\\\\\\\\\\\\\\\\\\\\
-    var prev;
+
     function eventHandler(e) {
+        var prev;
         // get id from event
         var id = e.target.id;
-        // console.log(id);
         // paint or reset
         if (!prev) {
             e.target.style.fill = "rgb(131, 60, 60)";
             prev = e.target;
+            console.log(prev);
         } else {
             prev.style.fill = "rgb(192, 192, 192)";
             e.target.style.fill = "red";
             prev = e.target;
         }
         // getCountry henter daten og retuner det til returnPoints
+        console.log("Calling")
         getCountry(id);
+        setLoading("Loading...")
         populateTable(id);
 
-    }
-    ////////////////////////////////return MapComp\\\\\\\\\\\\\\\\\\\\\\\\\\\
-    function myFunction() {
-        document.getElementById("myDropdown").classList.toggle("show");
+        console.log(allCountries)
+
     }
 
-    function filterFunction() {
-        var input, filter, ul, li, a, i, div;
-        input = document.getElementById("myInput");
-        filter = input.value.toUpperCase();
-        div = document.getElementById("myDropdown");
-        a = div.getElementsByTagName("a");
-        for (i = 0; i < a.length; i++) {
-            const txtValue = a[i].textContent || a[i].innerText;
-            if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                a[i].style.display = "";
-            } else {
-                a[i].style.display = "none";
-            }
+    ////////////////////////// map toggle (fix) \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ subject to delte
+    function myFunction() {
+        var x = document.getElementById("svg2");
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
         }
     }
 
+    /////////////////////////// button with countrys \\\\\\\\\\\\\\\\\\\\
 
+    // // fetch all countries via backEnd
+    function CharacterDropDown() {
+        const [items] = React.useState([
+            {
+                label: "Luke Skywalker",
+                value: "Luke Skywalker"
+            },
+            { label: "C-3PO", value: "C-3PO" },
+            { label: "R2-D2", value: "R2-D2" }
+        ]);
+        return (
+            <select>
+                {items.map(item => (
+                    <option
+                        key={item.value}
+                        value={item.value}
+                    >
+                        {item.label}
+                    </option>
+                ))}
+            </select>
+        );
+    }
+
+
+    ////////////////////////////////return MapComp\\\\\\\\\\\\\\\\\\\\\\\\\\\
     return (
         <div>
             {/* Smid svg rent in her hvis det ikke snart virker... */}
+            <World id="worldMap" onClick={eventHandler} />
             <div id="textBox">
-                <div class="dropdown">
-                    <button onclick="myFunction()" class="dropbtn">Dropdown</button>
-                    <div id="myDropdown" class="dropdown-content">
-                        <div> <input type="text" placeholder="Search.." id="myInput" onKeyUp={filterFunction, myFunction} /> </div>
-                        <a href="#about">About</a>
-                        <a href="#base">Base</a>
-                        <a href="#blog">Blog</a>
-                        <a href="#contact">Contact</a>
-                        <a href="#custom">Custom</a>
-                        <a href="#support">Support</a>
-                        <a href="#tools">Tools</a>
-                    </div>
-                </div>
+                <select
+                    value={property}
+                    onChange={event => setProperty(event.target.value)}
+                >
+                    <React.Fragment>
+                        <option value="de" > {countryName}</option>
+                        <option value="it" > italien</option>
+                        <option value="dk" > dk</option>
+                    </React.Fragment>
+                </select>
+
+                <div> {loading} </div>
 
 
 
-                <div>   <button onClick={dropdown} className="DropDownButton">Select country</button></div>
-                <button onClick={dropdown} className="DropDownButton">Select country</button>
+
+                {/* <div>   <button onClick={dropdown} className="DropDownButton">Select country</button></div>
+                <button onClick={dropdown} className="DropDownButton">Select country</button> */}
 
                 {/* Country name:        {countryName} <br></br>
                 Population:          {countryPopulation} <br></br>
@@ -183,8 +236,9 @@ export default function MapComp({ isLoggedIn }) {
                         </tr>
                     </tbody>
                 </table>
-                _____________________________________ <br></br>
-                <p>country development</p>
+                <br></br>
+                ________________________________________________________________________ <br></br>
+                <h2>Country development</h2>
 
                 <table className="table">
                     <tbody>
@@ -218,22 +272,28 @@ export default function MapComp({ isLoggedIn }) {
                         </tr>
                     </tbody>
                 </table>
-                _____________________________________ <br></br>
+                ________________________________________________________________________<br></br>
                 <p>Graf TBO</p>
             </div>
 
-            <div id="worldMap">
-                {/* not sure about img, in world its svg */}
-                {/* <img src={world} alt="worldmap" onClick={eventHandler} /> */}
-                {/* <img src={world} alt="worldmap" />
-                {window.addEventListener("click", eventHandler, false)} */}
-                {document.getElementById("svg2").addEventListener('click', eventHandler)};
-            </div>
+
+
+
+
+
+            {/* //////////// 1. forsøg \\\\\\\\\\\\\\\ */}
+
+            {/* <svg src={world} alt="worldmap" onClick={eventHandler} /> */}
+            {/* <img src={world} alt="worldmap" />
+                
+              {/* //////////// 2. forsøg \\\\\\\\\\\\\\\ */}
+
+            {/* {theMap.addEventListener('click', eventHandler)} */}
+            {/* {theMap.addEventListener("mouseover)  }; */}
+
 
         </div >
-
     );
-
 }
 // options:
 // 1
@@ -245,3 +305,10 @@ export default function MapComp({ isLoggedIn }) {
 // Accessing Object Values + objt loop: https://www.w3schools.com/js/js_json_objects.asp
 
 // drop down with search: https://www.w3schools.com/howto/howto_js_filter_dropdown.asp
+
+/////////////////////// To do \\\\\\\\\\\\\\\\\\\\\\\\
+// Problemformuleringer:
+// - svg(kort) ligger i index.html og giver følgende problemer:
+// - kort visses uhensigtsmæssigt i all navbar menuer
+//     (kan løse via en funktion, men det er unødvendigt hvis svg placeres under mapComp)
+//     -   
