@@ -5,6 +5,7 @@ import { useForm } from "./useform";
 import { useFetch } from "./useFetch";
 import { facadeREST } from "../../REST/RESTFacade"
 import facade from "../../Login/ApiFacade";
+import CountryDevelopmentComp from "./CountryDevelopmentComp";
 // import { SvgFromUri } from "react-native-svg";
 
 export default function MapComp({ isLoggedIn }) {
@@ -15,9 +16,12 @@ export default function MapComp({ isLoggedIn }) {
     const [countryInfected, setCountryInfected] = useState("");
     const [countryDead, setCountryDead] = useState("");
     const [countryRecovered, setCountryRecovered] = useState("");
-    const [day1, setDay1] = useState("");
+    const [id, setId] = useState("");
     const [loading, setLoading] = useState("Select a country");
     const [property, setProperty] = useState("de");
+    const [prev, setPrev] = useState();
+    const [doFetch, setDoFetch] = useState([]);
+
 
     const theMap = document.getElementById("svg2");
     const urlGetdays = "/api/country/newest/{days}/{code}";
@@ -52,7 +56,7 @@ export default function MapComp({ isLoggedIn }) {
             setCountryInfected("")
             setCountryDead("")
             setCountryRecovered("")
-            setDay1("")
+
 
         } else {
             const url = "http://localhost:8080/2020S3PBack/api/country/new/" + id
@@ -90,7 +94,6 @@ export default function MapComp({ isLoggedIn }) {
                     setCountryInfected(infected)
                     setCountryDead(deaths)
                     setCountryRecovered(recovered)
-                    setDay1(data.date)
                     setLoading(false)
 
                     // console.log("code: " + countryCode + " Name: " + countryName + " poulation : " + countryPopulation);
@@ -126,26 +129,24 @@ export default function MapComp({ isLoggedIn }) {
     ////////////////////////eventHandler\\\\\\\\\\\\\\\\\\\\\\\\
 
     function eventHandler(e) {
-        var prev;
         // get id from event
         var id = e.target.id;
+        setId(id);
         // paint or reset
         if (!prev) {
             e.target.style.fill = "rgb(131, 60, 60)";
-            prev = e.target;
+            setPrev(e.target);
             console.log(prev);
         } else {
             prev.style.fill = "rgb(192, 192, 192)";
-            e.target.style.fill = "red";
-            prev = e.target;
+            e.target.style.fill = "rgb(131, 60, 60)";
+            setPrev(e.target);
         }
         // getCountry henter daten og retuner det til returnPoints
         console.log("Calling")
         getCountry(id);
         setLoading("Loading...")
-        populateTable(id);
-
-        console.log(allCountries)
+        setDoFetch();
 
     }
 
@@ -189,8 +190,9 @@ export default function MapComp({ isLoggedIn }) {
     ////////////////////////////////return MapComp\\\\\\\\\\\\\\\\\\\\\\\\\\\
     return (
         <div>
-            {/* Smid svg rent in her hvis det ikke snart virker... */}
+
             <World id="worldMap" onClick={eventHandler} />
+
             <div id="textBox">
                 <select
                     value={property}
@@ -237,42 +239,9 @@ export default function MapComp({ isLoggedIn }) {
                     </tbody>
                 </table>
                 <br></br>
-                ________________________________________________________________________ <br></br>
-                <h2>Country development</h2>
 
-                <table className="table">
-                    <tbody>
-                        <tr>
-                            {/* <th>Country</th> */}
-                            <th>Date</th>
-                            <th>Infected</th>
-                            <th>Deceased</th>
-                            <th>Recovered</th>
-                        </tr>
-                        <tr>
-                            {/* <td>DE</td> */}
-                            <td>{day1}</td>
-                            <td>{countryInfected}</td>
-                            <td>{countryDead}</td>
-                            <td>{countryRecovered}</td>
-                        </tr>
-                        <tr>
-                            {/* <td>DK</td> */}
-                            <td>No date</td>
-                            <td>No data</td>
-                            <td>No data</td>
-                            <td>No data</td>
-                        </tr>
-                        <tr>
-                            {/* <td>Se</td> */}
-                            <td>No date</td>
-                            <td>No data</td>
-                            <td>No data</td>
-                            <td>No data</td>
-                        </tr>
-                    </tbody>
-                </table>
-                ________________________________________________________________________<br></br>
+                <CountryDevelopmentComp id={id} doFetch={setDoFetch} />
+
                 <p>Graf TBO</p>
             </div>
 
