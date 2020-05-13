@@ -35,7 +35,8 @@ export default function Navbar() {
             />
             <Switch>
                 <Route exact path="/">
-                    <HomeComp maptoggle={ToggleMap()} />
+                    <HomeComp />
+                    {/* <HomeComp maptoggle={ToggleMap()} /> */}
                 </Route>
                 <Route exact path="/map">
                     <MapComp />

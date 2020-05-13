@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import world from './world.svg';
+import { ReactComponent as World } from './world.svg';
 import "./map.css";
 import { useForm } from "./useform";
 import { useFetch } from "./useFetch";
@@ -21,6 +21,7 @@ export default function MapComp({ isLoggedIn }) {
 
     const theMap = document.getElementById("svg2");
     const urlGetdays = "/api/country/newest/{days}/{code}";
+    const { allCountries, loadingCountries } = useFetch("http://localhost:8080/2020S3PBack/api/country");
 
     ////////////////////////// custom hook\\\\\\\\\\\\\\\
     // const [values, setValues] =
@@ -68,13 +69,14 @@ export default function MapComp({ isLoggedIn }) {
                     // var deaths = data.totalDeaths;
                     // var recovered = data.totalRecovered;
 
-                    if (data == null || data == "") {
-                        var name = "";
-                        var population = "";
-                        var infected = "";
-                        var deaths = "";
-                        var recovered = "";
+                    if (data.date == null || data.date == "") {
+                        var name = data.countryName;
+                        var population = data.population;
+                        var infected = "No data";
+                        var deaths = "No data";
+                        var recovered = "No data";
                     } else {
+
                         var name = data.countryName;
                         var population = data.population.toLocaleString();
                         var infected = data.totalConfirmedInfected.toLocaleString();
@@ -89,8 +91,8 @@ export default function MapComp({ isLoggedIn }) {
                     setCountryDead(deaths)
                     setCountryRecovered(recovered)
                     setDay1(data.date)
-
                     setLoading(false)
+
                     // console.log("code: " + countryCode + " Name: " + countryName + " poulation : " + countryPopulation);
 
                     ////// Christian rod!\\\\\\ 
@@ -105,7 +107,7 @@ export default function MapComp({ isLoggedIn }) {
                 })
         }
     }
-    ////////////////////////////Dropdown box\\\\\\\\\\\\\\\\\\\
+    ////////////////////////////Dropdown box\\\\\\\\\\\\\\\\\\\ subject to change
     function dropdown() {
         var x = document.getElementById("Demo");
         if (x.className.indexOf("w3-show") == -1) {
@@ -114,7 +116,7 @@ export default function MapComp({ isLoggedIn }) {
             x.className = x.className.replace(" w3-show", "");
         }
     }
-    /////////////////////////populate table\\\\\\\\\\\\\\\\\\\\\
+    /////////////////////////populate table\\\\\\\\\\\\\\\\\\\\\  TBD
 
     function populateTable(id) {
         // 1. fetchCall(id)
@@ -122,16 +124,16 @@ export default function MapComp({ isLoggedIn }) {
     }
 
     ////////////////////////eventHandler\\\\\\\\\\\\\\\\\\\\\\\\
-    var prev;
-    function eventHandler(e) {
 
+    function eventHandler(e) {
+        var prev;
         // get id from event
         var id = e.target.id;
-        // console.log(id);
         // paint or reset
         if (!prev) {
             e.target.style.fill = "rgb(131, 60, 60)";
             prev = e.target;
+            console.log(prev);
         } else {
             prev.style.fill = "rgb(192, 192, 192)";
             e.target.style.fill = "red";
@@ -143,8 +145,11 @@ export default function MapComp({ isLoggedIn }) {
         setLoading("Loading...")
         populateTable(id);
 
+        console.log(allCountries)
+
     }
 
+    ////////////////////////// map toggle (fix) \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ subject to delte
     function myFunction() {
         var x = document.getElementById("svg2");
         if (x.style.display === "none") {
@@ -153,15 +158,39 @@ export default function MapComp({ isLoggedIn }) {
             x.style.display = "none";
         }
     }
+
+    /////////////////////////// button with countrys \\\\\\\\\\\\\\\\\\\\
+
+    // // fetch all countries via backEnd
+    function CharacterDropDown() {
+        const [items] = React.useState([
+            {
+                label: "Luke Skywalker",
+                value: "Luke Skywalker"
+            },
+            { label: "C-3PO", value: "C-3PO" },
+            { label: "R2-D2", value: "R2-D2" }
+        ]);
+        return (
+            <select>
+                {items.map(item => (
+                    <option
+                        key={item.value}
+                        value={item.value}
+                    >
+                        {item.label}
+                    </option>
+                ))}
+            </select>
+        );
+    }
+
+
     ////////////////////////////////return MapComp\\\\\\\\\\\\\\\\\\\\\\\\\\\
-
-
-
     return (
         <div>
             {/* Smid svg rent in her hvis det ikke snart virker... */}
-            <div> <button onClick={myFunction}>Toggle map</button></div>
-
+            <World id="worldMap" onClick={eventHandler} />
             <div id="textBox">
                 <select
                     value={property}
@@ -247,23 +276,22 @@ export default function MapComp({ isLoggedIn }) {
                 <p>Graf TBO</p>
             </div>
 
-            <div id="worldMap">
-                {/* <Svg>
-                    {world}
-                </Svg> */}
 
-                <svg></svg>
 
-                {/* //////////// 1. forsøg \\\\\\\\\\\\\\\ */}
-                {/* not sure about img, in world its svg */}
-                <svg src={world} alt="worldmap" onClick={eventHandler} />
-                {/* <img src={world} alt="worldmap" />
+
+
+
+            {/* //////////// 1. forsøg \\\\\\\\\\\\\\\ */}
+
+            {/* <svg src={world} alt="worldmap" onClick={eventHandler} /> */}
+            {/* <img src={world} alt="worldmap" />
                 
               {/* //////////// 2. forsøg \\\\\\\\\\\\\\\ */}
-                {/* // alternativ => speack with teacher */}
-                {theMap.addEventListener('click', eventHandler)}
-                {/* {theMap.addEventListener("mouseover)  }; */}
-            </div>
+
+            {/* {theMap.addEventListener('click', eventHandler)} */}
+            {/* {theMap.addEventListener("mouseover)  }; */}
+
+
         </div >
     );
 }
