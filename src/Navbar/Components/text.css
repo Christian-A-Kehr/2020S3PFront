@@ -29,6 +29,10 @@ p.login {
   text-align: center;
 }
 
+div.login {
+  text-align: center;
+}
+
 div.fetched {
   background-color: #eee;
   width: 400px;

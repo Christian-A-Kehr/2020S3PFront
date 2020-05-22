@@ -1,6 +1,6 @@
 #worldMap {
   display: block;
-  /* position: absolute; */
+  position: absolute;
   top: 0;
   left: 0;
   /* width: 100%;
@@ -28,7 +28,7 @@ circle:hover {
   border: 2px solid black;
   padding: 10px;
   margin-top: 70px;
-  margin-left: 1350px;
+  margin-left: 2000px;
   text-align: left;
 }
 
