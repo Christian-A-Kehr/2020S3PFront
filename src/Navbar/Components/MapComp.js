@@ -7,6 +7,7 @@ import "./map.css";
 // import facade from "../../Login/ApiFacade";
 import CountryDevelopmentComp from "./CountryDevelopmentComp";
 // import { SvgFromUri } from "react-native-svg";
+import { URL, getNewestCovidEP } from "../../Settings/Settings"
 
 export default function MapComp() {
     /////////////Hooks\\\\\\\\\\\\\\\\\\\\
@@ -55,9 +56,9 @@ export default function MapComp() {
 
 
         } else {
-            const url = "http://localhost:8080/2020S3PBack/api/country/new/" + id
-            console.log(url)
-            fetch(url)
+            const entireURL = URL + getNewestCovidEP + id
+            console.log(entireURL)
+            fetch(entireURL)
                 .then(res => res.json())
                 .then(data => {
                     // kontrol af data indhold
