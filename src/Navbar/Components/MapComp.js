@@ -71,7 +71,7 @@ export default function MapComp() {
                     let deaths = "";
                     let recovered = "";
 
-                    if (data.date === null || data.date === "") {
+                    if (data[0].date === null || data[0].date === "") {
                         name = data.countryName;
                         population = data.population;
                         infected = "No data";
@@ -79,11 +79,11 @@ export default function MapComp() {
                         recovered = "No data";
                     } else {
 
-                        name = data.countryName;
-                        population = data.population.toLocaleString();
-                        infected = data.totalConfirmedInfected.toLocaleString();
-                        deaths = data.totalDeaths.toLocaleString();
-                        recovered = data.totalRecovered.toLocaleString();
+                        name = data[0].countryName;
+                        population = data[0].population.toLocaleString();
+                        infected = data[0].totalConfirmedInfected.toLocaleString();
+                        deaths = data[0].totalDeaths.toLocaleString();
+                        recovered = data[0].totalRecovered.toLocaleString();
                     }
 
 
