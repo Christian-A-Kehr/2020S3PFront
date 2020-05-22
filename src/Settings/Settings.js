@@ -17,7 +17,7 @@ Add custom endpoints here for REST endpoints. Called in 'Navbar/Components'.
 */
 // const allJokesEP = "/api/jokes";
 //new covid data for one country needs an id => countryCode
-const getNewestCovidEP = "/api/country/new/"; //+ countryCode
+const getNewestCovidEP = "/api/country/1/new/"; //+ countryCode
 // get a list of all countries 
 const getCountriesEP = "/api/country";
 // get a list of the latest covid entries needs an id => countryCode
