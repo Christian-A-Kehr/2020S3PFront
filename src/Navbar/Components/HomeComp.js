@@ -55,7 +55,8 @@ function ApplicationDecription() {
                     Features: <br />
                     -	Choose a country from the map by clicking on the country or by selecting it from a dropdown menu. <br />
                     -	After selecting the country, you will be presented with; TBD last week!! <br />
-
+                <h4>Link to download mobile app</h4> <br />
+                <href>https://aegle.damat.at/apk/CLS-release.apk</href>
 
             </div>
         </div>
